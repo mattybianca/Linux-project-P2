@@ -18,7 +18,7 @@
 
 from sqlalchemy import create_engine
 import pandas as pd
-import  time, requests
+import os, json, time, requests
 import datetime as dt
 
 
@@ -28,7 +28,7 @@ import datetime as dt
 # Connection to DBproject database
 cnx = create_engine( "mysql+mysqldb://{userid}:{password}@localhost/{my_database}".format(
                 userid='p2', 
-                password='****',
+                password='verystrongpassword',
                 my_database='DBproject') )
 print(cnx)
 

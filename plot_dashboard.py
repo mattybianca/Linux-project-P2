@@ -30,7 +30,7 @@ import pandas as pd
 # Connection to DBproject database
 cnx = create_engine( "mysql+mysqldb://{userid}:{password}@localhost/{my_database}".format(
                 userid='p2', 
-                password='*****',
+                password='verystrongpassword',
                 my_database='DBproject') )
 print(cnx)
 
@@ -55,7 +55,6 @@ for k in tokens:
     temp.rename(columns={'mkt_cap':'{}'.format(k)}, inplace=True)
     df_mkt = df_mkt.merge(temp, on = 'date', how ='left')
 
-    
 
 df_mkt['total'] = df_mkt.drop('date', axis=1).sum(axis=1)
 
@@ -65,7 +64,6 @@ df_weigths['date'] = df_mkt['date']
 
 for k in tokens:
     df_weigths[k] = df_mkt[k]/df_mkt['total']
-
 
 df_correl = df_mkt.drop(['total'], axis = 1).corr().round(3)
 
@@ -80,7 +78,7 @@ app = Dash(__name__)
 # No need to update them later with a callback
 
 # Volatility Plot
-fig = px.line(df_vol)
+fig_vol = px.line(df_vol)
 
 
 # Heatmap Graphs
@@ -126,31 +124,36 @@ def update_line_chart(tokens):
 app.layout = html.Div([
     html.H1('Layer-1 tokens dashboard', style = {'text-align':'center'}),
     html.H2(''),
+
+    # Subsection mkt cap
     html.H2('Layer-1 Total Market Capitalization', style = {'text-align':'center'}),
-    html.H5('Select the tickers you want to insert in the computation of the total market cap.'),
-    
+    html.H4('Select the tickers you want to insert in the computation of the total market cap.'),
+    html.H6('By default ETH is not selected in the checklist.'),
     dcc.Checklist(
         id="checklist",
         options=tokens,
         value=[t for t in tokens if t != 'ETH'],
         inline=True
     ),
-    
-    
-    
-
+    # Graph 1 - mkt cap
     dcc.Graph(id="graph_mktcap"),
 
+    # Subsection weights
+    html.H2('Single weigths', style = {'text-align':'center'}),
+    # Graph 2 - weigths
     dcc.Graph(id="graph_weigths"),
 
+    # Subsection volatility
     html.H2("Layer-1 daily volatility index", style = {'text-align':'center'}),
     html.H4('This graph shows a marketcap-weighted daily volatility of #11 layer one tokens.'),
-    dcc.Graph(figure = fig),
+    # Graph 3 - fig_vol
+    dcc.Graph(figure = fig_vol),
 
-
+    # Subsection heatmap
     html.H2("Correlation Heatmap", style = {'text-align':'center'}),
+    # Graph 4 - heatmap
     dcc.Graph(figure = heatmap),
-])
+    ])
 
 
 

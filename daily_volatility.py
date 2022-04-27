@@ -16,7 +16,7 @@
 # Then the value of the volatility is stored into a DBproject's table named "daily_vol".
 # All the steps descriptions and formulas can be found in the report.
 
-
+import os, json,time, math, requests
 from sqlalchemy import create_engine
 import pandas as pd
 import datetime as dt
@@ -28,7 +28,7 @@ import numpy as np
 # Connection to DBproject database
 cnx = create_engine( "mysql+mysqldb://{userid}:{password}@localhost/{my_database}".format(
                 userid='p2', 
-                password='****',
+                password='verystrongpassword',
                 my_database='DBproject') )
 print(cnx)
 

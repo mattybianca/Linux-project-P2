@@ -27,7 +27,7 @@ import datetime as dt
 ## MySQL connection -- SQLalchemy
 cnx = create_engine( "mysql+mysqldb://{userid}:{password}@localhost/{my_database}".format(
                 userid='p2', 
-                password='****',
+                password='verystrongpassword',
                 my_database='DBproject') )
 print(cnx)
 
